@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gotel3
+  annotations:
+    "sidecar.jaegertracing.io/inject": "false"
+spec:
+  selector:
+    matchLabels:
+      app: gotel3
+  template:
+    metadata:
+      labels:
+        app: gotel3
+    spec:
+      containers:
+      - name: gotel3
+        image: fsedano/gotel:4
+        env:
+          - name: CE_REPLY
+            value: "fran.none"
+          - name: SVC_NAME
+            value: PING_REPLY3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: gotel3
+  name: gotel3
+  namespace: default
+spec:
+  ports:
+  - name: http-8080
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: gotel3
+  type: ClusterIP

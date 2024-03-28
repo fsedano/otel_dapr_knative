@@ -1,0 +1,42 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+  namespace: default
+spec:
+  type: state.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: redis-master.default.svc.cluster.local:6379
+  - name: redisPassword
+    secretKeyRef:
+      name: redis
+      key: redis-password
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+  namespace: default
+spec:
+  type: pubsub.redis
+  version: v1
+  metadata:
+  - name: redisHost
+    value: redis-master.default.svc.cluster.local:6379
+  - name: redisPassword
+    secretKeyRef:
+      name: redis
+      key: redis-password
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+  namespace: default
+spec:
+  tracing:
+    samplingRate: "1"
+    zipkin:
+      endpointAddress: "http://simplest-collector.default.svc.cluster.local:9411"

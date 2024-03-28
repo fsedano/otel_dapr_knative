@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gotel2
+  annotations:
+    "sidecar.jaegertracing.io/inject": "false"
+spec:
+  selector:
+    matchLabels:
+      app: gotel2
+  template:
+    metadata:
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-port: "8080"
+        dapr.io/app-id: "ping-reply"
+        dapr.io/log-level: "debug"
+      labels:
+        app: gotel2
+    spec:
+      containers:
+      - name: gotel2
+        image: fsedano/gotel:7
+        env:
+          - name: CE_REPLY
+            value: "fran.none"
+          - name: SVC_NAME
+            value: PING_REPLY
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: gotel2
+  name: gotel2
+  namespace: default
+spec:
+  ports:
+  - name: http-8080
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: gotel2
+  type: ClusterIP

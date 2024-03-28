@@ -1,0 +1,23 @@
+apiVersion: dapr.io/v1alpha1
+kind: Subscription
+metadata:
+  name: ping
+spec:
+  topic: ping
+  route: /
+  pubsubname: pubsub
+  deadLetterTopic: pubsubdlq
+scopes:
+- ping-answer
+---
+apiVersion: dapr.io/v1alpha1
+kind: Subscription
+metadata:
+  name: pingreply
+spec:
+  topic: pingreply
+  route: /
+  pubsubname: pubsub
+  deadLetterTopic: pubsubdlq
+scopes:
+- ping-reply

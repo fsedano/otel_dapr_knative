@@ -1,0 +1,47 @@
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+ name: ping-trigger
+ namespace: default
+spec:
+ broker: default
+ filter:
+   attributes:
+     type: fran.ping
+ subscriber:
+   ref:
+     apiVersion: v1
+     kind: Service
+     name: gotel
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+ name: ping-trigger2
+ namespace: default
+spec:
+ broker: default
+ filter:
+   attributes:
+     type: fran.pingreply
+ subscriber:
+   ref:
+     apiVersion: v1
+     kind: Service
+     name: gotel2
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+ name: ping-trigger3
+ namespace: default
+spec:
+ broker: default
+ filter:
+   attributes:
+     type: fran.pingreply
+ subscriber:
+   ref:
+     apiVersion: v1
+     kind: Service
+     name: gotel3

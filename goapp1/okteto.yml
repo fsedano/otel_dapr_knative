@@ -1,0 +1,13 @@
+name: gotel
+container: gotel
+image: okteto/golang:1
+command: bash
+securityContext:
+  capabilities:
+    add:
+    - SYS_PTRACE
+sync:
+- .:/usr/src/app
+volumes:
+- /go/pkg/
+- /root/.cache/go-build/
